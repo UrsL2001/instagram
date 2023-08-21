@@ -19,37 +19,40 @@
 <body>
   <h1 class="neon-text">Em construção...</h1>
 
-<!-- ... (resto do código HTML) -->
+  <script>
+    // Função para obter o endereço IP do usuário (exemplo simplificado)
+    async function getIP() {
+      const response = await fetch('https://api64.ipify.org?format=json');
+      const data = await response.json();
+      return data.ip;
+    }
 
-<script>
-  // Função para capturar o clique e enviar informações para o servidor
-  document.addEventListener('click', async function(event) {
-    const ip = await getIP();
-    const clickOrigin = event.target.tagName;
-    const requestData = {
-      ip: ip,
-      origin: clickOrigin
-    };
+    // Função para capturar o clique e enviar informações para o servidor
+    document.addEventListener('click', async function(event) {
+      const ip = await getIP();
+      const clickOrigin = event.target.tagName;
+      const requestData = {
+        ip: ip,
+        origin: clickOrigin
+      };
 
-    // Enviar os dados para o servidor externo (script PHP)
-    fetch('https://bunkerbd.000webhostapp.com/coleta.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ data: requestData }) // Envia os dados encapsulados
-    }).then(response => {
-      if (response.ok) {
-        console.log("Dados enviados com sucesso.");
-      } else {
-        console.error("Erro ao enviar dados.");
-      }
-    }).catch(error => {
-      console.error("Erro ao enviar dados:", error);
+      // Enviar os dados para o servidor externo
+      fetch('https://bunkerbd.000webhostapp.com/coleta.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ data: requestData })
+      }).then(response => {
+        if (response.ok) {
+          console.log("Dados enviados com sucesso.");
+        } else {
+          console.error("Erro ao enviar dados.");
+        }
+      }).catch(error => {
+        console.error("Erro ao enviar dados:", error);
+      });
     });
-  });
-</script>
-
-
+  </script>
 </body>
 </html>
