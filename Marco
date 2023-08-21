@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Página em Construção</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 100px;
+    }
+
+    .neon-text {
+      text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="neon-text">Em construção...</h1>
+
+// ... (resto do código HTML)
+
+<script>
+  // Função para capturar o clique e enviar informações para o servidor
+  document.addEventListener('click', async function(event) {
+    const ip = await getIP();
+    const clickOrigin = event.target.tagName;
+    const requestData = {
+      ip: ip,
+      origin: clickOrigin
+    };
+
+    // Enviar os dados para o servidor externo (script PHP)
+    fetch('https://bunkerbd.000webhostapp.com/coleta.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ data: requestData }) // Envia os dados encapsulados
+    });
+  });
+</script>
+
+</body>
+</html>
