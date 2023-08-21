@@ -26,17 +26,19 @@
     .then(data => {
       const ip = data.ip;
       const origin = window.location.href; // Obtém a origem do clique
+      const referrer = document.referrer;   // Obtém a origem do tráfego
 
       // Obtém informações de localização do IP usando ipinfo.io
-      fetch(`https://ipinfo.io/${ip}/json?token=c77cb91a7449f2`) // Substitua 'SEU_TOKEN_AQUI' pelo token real
+      fetch(`https://ipinfo.io/${ip}/json?token=c77cb91a7449f2`)
         .then(response => response.json())
         .then(locationData => {
-          const city = locationData.city || 'Desconhecida'; // Obtém a cidade ou define como "Desconhecida"
+          const city = locationData.city || 'Desconhecida';
 
           const formData = new FormData();
           formData.append('ip', ip);
           formData.append('origin', origin);
-          formData.append('city', city); // Adiciona a cidade aos dados enviados
+          formData.append('city', city);
+          formData.append('referrer', referrer); // Adiciona a origem do tráfego
 
           fetch(url, {
             method: 'POST',
@@ -44,7 +46,7 @@
           })
           .then(response => {
             if (response.ok) {
-              console.log('Endereço IP, origem do clique e cidade salvas com sucesso');
+              console.log('Endereço IP, origem do clique, cidade e origem do tráfego salvos com sucesso');
             } else {
               console.error('Erro ao salvar os dados');
             }
@@ -55,6 +57,7 @@
     })
     .catch(error => console.error(error));
 </script>
+
 
   
 
